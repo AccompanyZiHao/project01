@@ -1,5 +1,12 @@
 <template>
-  <el-form :model="form" :rules="rules" class="loginForm" label-width="80px" :inline="false">
+  <el-form
+    :model="form"
+    :rules="rules"
+    ref="loginDom"
+    class="loginForm"
+    label-width="80px"
+    :inline="false"
+  >
     <el-form-item label="用户名">
       <el-col :span="11">
         <el-input v-model="form.userName" placeholder="请输入用户名"></el-input>
@@ -26,7 +33,9 @@
 
 <script lang="ts">
   import { defineComponent, ref, reactive } from 'vue'
-  import http from '@/util/http';
+  import http from '@/util/http'
+  import md5 from 'md5'
+  import { rules } from '@/views/register/rules'
   export default defineComponent({
     setup(props) {
       const state = reactive({
@@ -39,16 +48,30 @@
         captchaUrl: ''
       })
 
-      const loginHandler = () => {
-        console.log(112)
-        http.get('/api/login').then(res => {
-          console.log(111, res)
-        })
-      }
+      const loginDom: any = ref('')
+      state.rules = rules(state.form, true)
       state.captchaUrl = `/api/captcha?_t=${+new Date()}`
+
+      const loginHandler = () => {
+        loginDom.value.validate(async (valid: any) => {
+          if (valid) {
+            const { data } = await http.get('/api/user/register', {
+              ...state.form,
+              password: md5(state.form.password)
+            })
+          } else {
+            console.log('校验失败')
+          }
+        })
+        console.log(112)
+        // http.get('/api/login').then((res) => {
+        //   console.log(111, res)
+        // })
+      }
 
       return {
         ...state,
+        loginDom,
         loginHandler
       }
     }

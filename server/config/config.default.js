@@ -26,5 +26,11 @@ module.exports = appInfo => {
   return {
     ...config,
     ...userConfig,
+    security: {
+      csrf: {
+        // 改为 false 安全性降低 注册接口可以不加 token
+        enable: false, // https://eggjs.org/zh-cn/core/security.html#安全威胁csrf的防范
+      },
+    },
   };
 };

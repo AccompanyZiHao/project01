@@ -23,11 +23,12 @@ service.interceptors.response.use(
   (res) => {
     const { data, status } = res;
     if (status === 200) {
-      const { code, msg } = data;
+      const { code, message } = data;
+      console.log(1, code, data)
       if (code === 0) {
         return Promise.resolve(data);
       } else {
-        ElMessage.error(msg);
+        ElMessage.error(message);
         return Promise.resolve(data);
       }
     } else {

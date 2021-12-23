@@ -15,7 +15,10 @@
     "allowSyntheticDefaultImports": true,
     // 解析非相对模块名的基准目录
     "baseUrl": ".",
-    "types": ["element-plus/global"]
+    "types": ["element-plus/global"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"]
 }

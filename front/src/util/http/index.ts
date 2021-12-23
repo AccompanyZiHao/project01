@@ -3,7 +3,7 @@ import axiosInit from './axios';
 
 const { service } = axiosInit;
 export default {
-  get(url: string, params: string) {
+  get(url: string, params: any) {
     return service({
       url,
       params,
