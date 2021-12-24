@@ -32,5 +32,11 @@ module.exports = appInfo => {
         enable: false, // https://eggjs.org/zh-cn/core/security.html#安全威胁csrf的防范
       },
     },
+    mongoose: {
+      client: {
+        url: 'mongodb+srv://123456:zihao123456@cluster0.7sbsy.mongodb.net/ZHHUB?retryWrites=true&w=majority',
+        options: {},
+      },
+    },
   };
 };
