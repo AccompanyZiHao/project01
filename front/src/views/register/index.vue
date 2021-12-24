@@ -21,7 +21,7 @@
       <el-col :span="11">
         <el-input v-model="form.captcha" placeholder="请输入验证码"></el-input>
       </el-col>
-      <img :src="captchaUrl" alt="" />
+      <img :src="captchaUrl" alt="" @click="resetCaptcha"/>
     </el-form-item>
     <el-form-item label="密码" prop="password">
       <el-col :span="11">
@@ -59,12 +59,10 @@
           captcha: ''
         },
         rules: {},
-        captchaUrl: ''
       })
 
       const registerDom: any = ref('')
       state.rules = rules(state.form, true)
-      state.captchaUrl = `/api/captcha?_t=${+new Date()}`
 
       const router = useRouter()
       const registerHandler = () => {
@@ -83,10 +81,18 @@
         })
       }
 
+      let captchaUrl = ref('')
+      const resetCaptcha = () =>{
+        captchaUrl.value = `/api/captcha?_t=${+new Date()}`
+      }
+      resetCaptcha()
+
       return {
         ...state,
         registerDom,
-        registerHandler
+        captchaUrl,
+        registerHandler,
+        resetCaptcha
       }
     }
   })
