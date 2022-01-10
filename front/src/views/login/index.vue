@@ -7,6 +7,11 @@
     label-width="80px"
     :inline="false"
   >
+    <el-form-item label="邮箱">
+      <el-col :span="11">
+        <el-input v-model="form.email" placeholder="请输入用户名"></el-input>
+      </el-col>
+    </el-form-item>
     <el-form-item label="用户名">
       <el-col :span="11">
         <el-input v-model="form.userName" placeholder="请输入用户名"></el-input>
@@ -16,7 +21,7 @@
       <el-col :span="11">
         <el-input v-model="form.captcha" placeholder="请输入验证码"></el-input>
       </el-col>
-      <img :src="captchaUrl" alt="" />
+      <img :src="captchaUrl" alt="" @click="resetCaptcha" />
     </el-form-item>
     <el-form-item label="密码">
       <el-col :span="11">
@@ -36,41 +41,64 @@
   import http from '@/util/http'
   import md5 from 'md5'
   import { rules } from '@/views/register/rules'
+  import { ElMessage } from 'element-plus'
+
   export default defineComponent({
     setup(props) {
       const state = reactive({
         form: {
           userName: '',
+          email: '',
           password: '',
           captcha: ''
         },
-        rules: {},
-        captchaUrl: ''
+        rules: {
+          email: [
+            { required: true, message: '请输入邮箱' },
+            { type: 'email', message: '请输入正确的邮箱格式' }
+          ],
+          captcha: [{ required: true, message: '请输入验证码' }],
+          // emailcode:[
+          //   { required:true, message:"请输入邮箱验证码" },
+          // ],
+
+          password: [{ required: true, pattern: /^[\w_-]{6,12}$/g, message: '请输入6~12位密码' }]
+        }
       })
 
       const loginDom: any = ref('')
       state.rules = rules(state.form, true)
-      state.captchaUrl = `/api/captcha?_t=${+new Date()}`
+
+      let captchaUrl = ref('')
+      const resetCaptcha = () => {
+        captchaUrl.value = `/api/captcha?_t=${+new Date()}`
+      }
+      resetCaptcha()
 
       const loginHandler = () => {
         loginDom.value.validate(async (valid: any) => {
           if (valid) {
-            const { data } = await http.get('/api/user/register', {
+            const {
+              code,
+              data: { token }
+            } = await http.post('/api/user/login', {
               ...state.form,
               password: md5(state.form.password)
             })
+            if (code === 0) {
+              localStorage.setItem('token', token)
+              ElMessage.success('登录成功')
+            }
           } else {
             console.log('校验失败')
           }
         })
-        console.log(112)
-        // http.get('/api/login').then((res) => {
-        //   console.log(111, res)
-        // })
       }
 
       return {
         ...state,
+        resetCaptcha,
+        captchaUrl,
         loginDom,
         loginHandler
       }

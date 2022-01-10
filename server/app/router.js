@@ -11,8 +11,9 @@ module.exports = app => {
   router.get('/captcha', controller.util.captcha);
 
   router.group({ name: 'user', prefix: '/user' }, router => {
-    const { register } = controller.user
+    const { register, login } = controller.user
     router.post('/register', register)
+    router.post('/login', login)
   })
 
 };

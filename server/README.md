@@ -32,7 +32,8 @@ $ npm stop
 
 [egg]: https://eggjs.org
 
-
+****
+### 项目记录
 插件
 ```
 egg-router-group 路由分组
@@ -59,3 +60,7 @@ code 0 是成功 其他都是失败
 
 规范 controller/base
 配置插件 config/plugins
+
+配置启动服务过程报错
+`spawn tail ENOENT`
+应该是我中途切换了 node 版本，在换回 14.0.0 版本后正常

@@ -11,6 +11,7 @@ class ustilController extends Controller {
       height: 30,
       noise: 3,
     })
+    console.log('captcha.data :>> ', captcha.text);
     this.ctx.session.captcha = captcha.text
     this.ctx.response.type = 'image/svg+xml'
     this.ctx.body = captcha.data
