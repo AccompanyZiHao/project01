@@ -13,12 +13,12 @@ const createRule = {
 class userController extends BaseController {
   async login() {
     const { ctx, app } = this
-    const { email, captcha, password, emailcode } = ctx.request.body
+    const { email, captcha, password, emailCode } = ctx.request.body
     if (captcha.toUpperCase() !== ctx.session.captcha.toUpperCase()) {
       return this.error('验证码错误')
     }
 
-    if (emailcode !== ctx.session.emailcode) {
+    if (emailCode !== ctx.session.emailCode) {
       return this.error('邮箱验证码错误')
     }
 
@@ -35,7 +35,7 @@ class userController extends BaseController {
       _id: user._id,
       email,
     }, app.config.jwt.secret, {
-      expiresIn: '100h',
+      expiresIn: '1h',
     })
     this.success({ token, email, nickname: user.nickname })
   }
@@ -74,7 +74,12 @@ class userController extends BaseController {
     // 2
   }
   async info() {
-    // 2
+    const { ctx } = this
+    const { email } = ctx.state
+    const user = await this.checkEmail(email)
+    this.success(user)
+    // 这里需要获取用户信息 但是我们暂时不知道是哪个用户
+    // 需要根据用户的 token 来判断
   }
 }
 
