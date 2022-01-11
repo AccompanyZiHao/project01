@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { useStore } from 'vuex'
-import { ElMessage  } from 'element-plus';
+import { ElMessage, ElMessageBox  } from 'element-plus';
 
 const service = axios.create({
   withCredentials: true,
@@ -8,8 +8,14 @@ const service = axios.create({
   baseURL: '',
 });
 
+const TOKEN_KEY = 'token'
 service.interceptors.request.use(
   (config) => {
+    const token = window.localStorage.getItem('token')
+    // 设置url白名单
+    if(token){
+      config.headers.common['Authorization'] = 'Bearer ' + token
+    }
     return config;
   },
   (error) => {
@@ -26,7 +32,19 @@ service.interceptors.response.use(
       const { code, message } = data;
       console.log(1, code, data)
       if (code === 0) {
+        if(res.config.url ==='/api/user/login'){
+          localStorage.setItem(TOKEN_KEY, data.token)
+        }
         return Promise.resolve(data);
+      } else if(code === 101){
+        ElMessageBox.confirm('登录过期了','过期',{
+          confirmButtonText:'登录',
+          showCancelButton:false,
+          type:'warning'
+        }).then(()=>{
+          localStorage.removeItem(TOKEN_KEY)
+          // redirect({ path:'/login'})
+        })
       } else {
         ElMessage.error(message);
         return Promise.resolve(data);

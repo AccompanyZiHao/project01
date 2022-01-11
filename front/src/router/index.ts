@@ -12,6 +12,11 @@ const routerList = [
     name: 'register',
     component: () => import('../views/register/index.vue'),
   },
+  {
+    path: '/userCenter',
+    name: 'userCenter',
+    component: () => import('../views/userCenter/index.vue'),
+  },
 ]
 
 const routes: Array<RouteRecordRaw> = [
