@@ -1,22 +1,22 @@
-import qs from 'qs';
-import axiosInit from './axios';
+import qs from 'qs'
+import axiosInit from './axios'
 
-const { service } = axiosInit;
+const { service } = axiosInit
 export default {
   get(url: string, params: any) {
     return service({
       url,
       params,
-      method: 'GET',
-    });
+      method: 'GET'
+    })
   },
   post(url: string, params: any) {
     // "Content-Type": "application/x-www-form-urlencoded"
     return service({
       url,
-      data: qs.stringify({...params}),
-      method: 'POST',
-    });
+      data: params,
+      method: 'POST'
+    })
   },
   postJSON(url: string, params: any) {
     // "Content-Type": "application/x-www-form-urlencoded"
@@ -24,6 +24,6 @@ export default {
     // const secretKey= '850060741842313217'
     return service.post(url, {
       ...params
-    });
-  },
-};
+    })
+  }
+}
