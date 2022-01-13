@@ -10,12 +10,13 @@ export default {
       method: 'GET'
     })
   },
-  post(url: string, params: any) {
+  post(url: string, params: any, config: any = {}) {
     // "Content-Type": "application/x-www-form-urlencoded"
     return service({
       url,
       data: params,
-      method: 'POST'
+      method: 'POST',
+      ...config,
     })
   },
   postJSON(url: string, params: any) {

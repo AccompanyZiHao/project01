@@ -74,7 +74,7 @@
       })
 
       const loginDom: any = ref('')
-      state.rules = rules(state.form, true)
+      // state.rules = rules(state.form, true)
 
       let captchaUrl = ref('')
       const resetCaptcha = () => {
