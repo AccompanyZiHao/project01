@@ -1,11 +1,14 @@
 <template>
-  <h1>用戶中心</h1>
+  <!-- <h1>用戶中心</h1> -->
   <i class="el-icon-loading"></i>
   <div ref="dragDom" id="drag">
     <input type="file" name="file" @change="handleFileChange" />
   </div>
   <div>
     <el-progress :stroke-width="20" :text-inside="true" :percentage="uploadProgress"></el-progress>
+  </div>
+  <div>
+    <el-progress :stroke-width="20" :text-inside="true" :percentage="hashProgress"></el-progress>
   </div>
   <div>
     <el-button @click="uploadFile">上传</el-button>
